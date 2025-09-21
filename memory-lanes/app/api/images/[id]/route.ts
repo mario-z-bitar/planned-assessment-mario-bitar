@@ -4,7 +4,7 @@ import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+async function deleteImage(req: Request, { params }: { params: { id: string } }) {
   const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
   if (!session.isLoggedIn) return new Response("Unauthorized", { status: 401 });
 
@@ -37,4 +37,12 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
 
   // Redirect back to lane
   return Response.redirect(new URL(`/lanes/${memory.lane_id}`, req.url));
+}
+
+export async function DELETE(req: Request, context: { params: { id: string } }) {
+  return deleteImage(req, context);
+}
+
+export async function POST(req: Request, context: { params: { id: string } }) {
+  return deleteImage(req, context);
 }

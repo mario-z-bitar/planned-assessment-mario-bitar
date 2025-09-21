@@ -3,26 +3,26 @@ import { cookies } from "next/headers";
 import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData } from "@/lib/session";
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+async function deleteMemory(req: Request, { params }: { params: { id: string } }) {
   const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
   if (!session.isLoggedIn) return new Response("Unauthorized", { status: 401 });
 
-  const data = await req.json();
-  const memory = await prisma.memories.update({
+  const memory = await prisma.memories.findUnique({
     where: { id: params.id },
-    data: {
-      title: data.title,
-      description: data.description ?? null,
-      occurred_at: new Date(data.occurredAt),
-    },
+    select: { lane_id: true },
   });
-  return Response.json(memory);
-}
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-  const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
-  if (!session.isLoggedIn) return new Response("Unauthorized", { status: 401 });
+  if (!memory) return new Response("Not found", { status: 404 });
 
   await prisma.memories.delete({ where: { id: params.id } });
-  return new Response(null, { status: 204 });
+
+  return Response.redirect(new URL(`/lanes/${memory.lane_id}`, req.url));
+}
+
+export async function DELETE(req: Request, context: { params: { id: string } }) {
+  return deleteMemory(req, context);
+}
+
+export async function POST(req: Request, context: { params: { id: string } }) {
+  return deleteMemory(req, context);
 }

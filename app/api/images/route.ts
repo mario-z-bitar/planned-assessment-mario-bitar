@@ -6,7 +6,7 @@ import { supabase } from "@/lib/supabase";
 import { randomUUID } from "crypto";
 
 export async function POST(req: Request) {
-  const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
+  const session = await getIronSession<SessionData>(cookies(), sessionOptions);
   if (!session.isLoggedIn) return new Response("Unauthorized", { status: 401 });
 
   const formData = await req.formData();
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
     .getPublicUrl(filePath);
 
   // save in db
-  const image = await prisma.memory_images.create({
+  await prisma.memory_images.create({
     data: {
       memory_id: memoryId,
       image_url: data.publicUrl,

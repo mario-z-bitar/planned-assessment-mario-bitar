@@ -62,3 +62,7 @@ Supabase was selected for both Postgres and object storage, simplifying hosting 
 Client components handle forms so we can stay in the App Router without legacy pages; server components keep Prisma queries on the server and avoid shipping secrets.
 Lane deletion redirects back to /lanes to keep the editing flow focused on the dashboard.
 Clipboard-based sharing provides quick “send the lane link” functionality without external integrations.
+
+
+HERE'S A LINK TO TEST IT OUT:
+https://planned-assessment-mario-bitar.vercel.app/lanes

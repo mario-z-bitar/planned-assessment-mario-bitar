@@ -1,11 +1,12 @@
 import { prisma } from "@/lib/prisma";
+import { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 import { randomUUID } from "crypto";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions);
   if (!session.isLoggedIn) return new Response("Unauthorized", { status: 401 });
 

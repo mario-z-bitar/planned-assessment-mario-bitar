@@ -1,6 +1,6 @@
 # Memory Lanes
 
-A Next.js application for collecting and sharing "memory lanes"—chronological collections of memories with photos. Editors log in with a shared password to manage lanes, memories, and images; everyone else can browse published lanes without credentials.
+This is my quick implementation of the Memory Lanes app. It was written in collaboration with OpenAi's Codex. I also built a UI that is similar to the mockup but not exactly the same. I figure I could spend more time to align it further but fir this assessment this should be enough. 
 
 ## Live Demo
 - App: https://planned-assessment-mario-bitar.vercel.app/lanes
@@ -66,10 +66,6 @@ A Next.js application for collecting and sharing "memory lanes"—chronological 
 - Vercel deploys run `npm run build`; ensure Supabase credentials & session secrets are set as environment variables.
 - Supabase Storage expects objects under `memory-images/<memoryId>/<uuid>.<ext>`; deletion removes both the DB row and stored file.
 
-## Future Enhancements
-- Add rate limiting and audit logging for admin actions
-- Optional multi-user auth with role-based access
-- Automated image optimization and thumbnail generation
 
 ---
-Questions or feedback? Open an issue or reach out via the deploy link above.
+Let me know what you think!

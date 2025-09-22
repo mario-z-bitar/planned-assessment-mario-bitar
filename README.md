@@ -40,19 +40,33 @@ This is my quick implementation of the Memory Lanes app. It was written in colla
    npm install
    ```
 
+3. **Configure Environment Variables**
+   - Copy the example file so real secrets stay out of version control:
+     ```bash
+     cp .env.example .env.local
+     ```
+   - Fill in `.env.local` with your own Supabase credentials and secrets. The placeholders look like:
+     ```env
+     DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DB?sslmode=require"
+     NEXT_PUBLIC_SUPABASE_URL="https://your-project-ref.supabase.co"
+     NEXT_PUBLIC_SUPABASE_ANON_KEY="supabase-anon-key"
+     SUPABASE_SERVICE_ROLE_KEY="supabase-service-role-key"
+     ADMIN_PASSWORD="shared-editor-password"
+     IRON_SESSION_PASSWORD="32+ character session secret"
+     ```
 
-3. **Database Migration**
+4. **Database Migration**
    ```bash
    npx prisma migrate deploy   # or migrate dev in local development
    ```
 
-4. **Run Locally**
+5. **Run Locally**
    ```bash
    npm run dev
    ```
    Open http://localhost:3000/lanes and use the admin password to enable editing.
 
-5. **Lint & Build**
+6. **Lint & Build**
    ```bash
    npm run lint
    npm run build

@@ -6,6 +6,17 @@ import { NextRequest } from "next/server";
 
 type LaneRouteContext = RouteContext<"/api/lanes/[id]">;
 
+async function deleteLane(request: NextRequest, context: LaneRouteContext) {
+  const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
+  if (!session.isLoggedIn) return new Response("Unauthorized", { status: 401 });
+
+  const { id } = await context.params;
+
+  await prisma.lanes.delete({ where: { id } });
+
+  return Response.redirect(new URL("/lanes", request.url));
+}
+
 export async function PUT(request: NextRequest, context: LaneRouteContext) {
   const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
   if (!session.isLoggedIn) return new Response("Unauthorized", { status: 401 });
@@ -24,11 +35,9 @@ export async function PUT(request: NextRequest, context: LaneRouteContext) {
 }
 
 export async function DELETE(request: NextRequest, context: LaneRouteContext) {
-  const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
-  if (!session.isLoggedIn) return new Response("Unauthorized", { status: 401 });
+  return deleteLane(request, context);
+}
 
-  const { id } = await context.params;
-
-  await prisma.lanes.delete({ where: { id } });
-  return new Response(null, { status: 204 });
+export async function POST(request: NextRequest, context: LaneRouteContext) {
+  return deleteLane(request, context);
 }

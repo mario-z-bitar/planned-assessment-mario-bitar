@@ -40,30 +40,19 @@ A Next.js application for collecting and sharing "memory lanes"—chronological 
    npm install
    ```
 
-3. **Environment Variables**
-   Create `.env.local` with values for your Supabase project and session secrets:
-   ```env
-   DATABASE_URL="postgresql://..."
-   NEXT_PUBLIC_SUPABASE_URL="https://<project>.supabase.co"
-   NEXT_PUBLIC_SUPABASE_ANON_KEY="<anon-key>"
-   SUPABASE_SERVICE_ROLE_KEY="<service-role-key>"
-   ADMIN_PASSWORD="<shared-editor-password>"
-   IRON_SESSION_PASSWORD="<32+ character secret>"
-   ```
-   For the production demo, the admin password matches `ADMIN_PASSWORD` stored in Vercel.
 
-4. **Database Migration**
+3. **Database Migration**
    ```bash
    npx prisma migrate deploy   # or migrate dev in local development
    ```
 
-5. **Run Locally**
+4. **Run Locally**
    ```bash
    npm run dev
    ```
    Open http://localhost:3000/lanes and use the admin password to enable editing.
 
-6. **Lint & Build**
+5. **Lint & Build**
    ```bash
    npm run lint
    npm run build

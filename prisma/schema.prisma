@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model lanes {
+  id              String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title           String
+  description     String?
+  cover_image_url String?
+  created_at      DateTime?  @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime?  @default(now()) @db.Timestamptz(6)
+  memories        memories[]
+}
+
+model memories {
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  lane_id       String          @db.Uuid
+  title         String
+  description   String?
+  occurred_at   DateTime        @db.Timestamptz(6)
+  created_at    DateTime?       @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime?       @default(now()) @db.Timestamptz(6)
+  lanes         lanes           @relation(fields: [lane_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  memory_images memory_images[]
+
+  @@index([lane_id, occurred_at], map: "idx_memories_lane")
+}
+
+model memory_images {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  memory_id String   @db.Uuid
+  image_url String
+  alt       String?
+  position  Int?     @default(0)
+  memories  memories @relation(fields: [memory_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([memory_id, position], map: "idx_memory_images_memory")
+}

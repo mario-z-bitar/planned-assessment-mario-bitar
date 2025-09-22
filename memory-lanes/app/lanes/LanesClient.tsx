@@ -32,7 +32,7 @@ export function LanesClient({ lanes, isLoggedIn }: LanesClientProps) {
                 <div className="h-6 w-6 rounded-lg bg-gray-900" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold">Memory lanes</h1>
+                <h1 className="text-3xl font-bold">Memory Lanes</h1>
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-gray-600">
                   Curate stories in living collections. Each lane keeps its memories ready for friends and family to explore.
                 </p>
@@ -114,7 +114,7 @@ export function LanesClient({ lanes, isLoggedIn }: LanesClientProps) {
             {lanes.map((lane) => {
               const latestMemory = lane.memories[0];
               return (
-                <div
+                <article
                   key={lane.id}
                   className="space-y-4 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                 >
@@ -135,32 +135,27 @@ export function LanesClient({ lanes, isLoggedIn }: LanesClientProps) {
                     </div>
 
                     {isLoggedIn && (
-                      <div className="flex items-center gap-2">
-                        <Link
-                          href={`/lanes/${lane.id}`}
-                          className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 shadow-sm transition hover:bg-gray-200"
+                      <form action={`/api/lanes/${lane.id}`} method="post">
+                        <button
+                          type="submit"
+                          className="rounded-md border border-red-200 bg-white px-3 py-1.5 text-xs font-semibold text-red-500 shadow-sm transition hover:bg-red-500 hover:text-white"
                         >
-                          View lane
-                        </Link>
-                        <form action={`/api/lanes/${lane.id}`} method="post">
-                          <button
-                            type="submit"
-                            className="rounded-md border border-red-200 bg-white px-3 py-1.5 text-xs font-semibold text-red-500 shadow-sm transition hover:bg-red-500 hover:text-white"
-                          >
-                            Delete lane
-                          </button>
-                        </form>
-                      </div>
+                          Delete lane
+                        </button>
+                      </form>
                     )}
                   </div>
 
                   {latestMemory && (
-                    <div className="rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm text-gray-600">
+                    <Link
+                      href={`/lanes/${lane.id}`}
+                      className="block rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm text-gray-600 transition hover:border-gray-200"
+                    >
                       <span className="font-medium text-gray-700">{latestMemory.title}</span>
                       {latestMemory.description ? ` — ${latestMemory.description}` : ""}
-                    </div>
+                    </Link>
                   )}
-                </div>
+                </article>
               );
             })}
           </section>

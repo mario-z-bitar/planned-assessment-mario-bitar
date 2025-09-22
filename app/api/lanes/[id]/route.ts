@@ -2,14 +2,19 @@ import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData } from "@/lib/session";
+import { NextRequest } from "next/server";
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
-  const session = await getIronSession<SessionData>( await cookies(), sessionOptions);
+type LaneRouteContext = RouteContext<"/api/lanes/[id]">;
+
+export async function PUT(request: NextRequest, context: LaneRouteContext) {
+  const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
   if (!session.isLoggedIn) return new Response("Unauthorized", { status: 401 });
 
-  const data = await req.json();
+  const data = await request.json();
+  const { id } = await context.params;
+
   const lane = await prisma.lanes.update({
-    where: { id: params.id },
+    where: { id },
     data: {
       title: data.title,
       description: data.description ?? null,
@@ -18,10 +23,12 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   return Response.json(lane);
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, context: LaneRouteContext) {
   const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
   if (!session.isLoggedIn) return new Response("Unauthorized", { status: 401 });
 
-  await prisma.lanes.delete({ where: { id: params.id } });
+  const { id } = await context.params;
+
+  await prisma.lanes.delete({ where: { id } });
   return new Response(null, { status: 204 });
 }

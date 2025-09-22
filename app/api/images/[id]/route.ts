@@ -8,7 +8,7 @@ import { NextRequest } from "next/server";
 type ImageRouteContext = RouteContext<"/api/images/[id]">;
 
 async function deleteImage(request: NextRequest, context: ImageRouteContext) {
-  const session = await getIronSession<SessionData>(cookies(), sessionOptions);
+  const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
   if (!session.isLoggedIn) return new Response("Unauthorized", { status: 401 });
 
   const { id } = await context.params;

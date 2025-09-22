@@ -7,7 +7,7 @@ import { supabase } from "@/lib/supabase";
 import { randomUUID } from "crypto";
 
 export async function POST(req: NextRequest) {
-  const session = await getIronSession<SessionData>(cookies(), sessionOptions);
+  const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
   if (!session.isLoggedIn) return new Response("Unauthorized", { status: 401 });
 
   const formData = await req.formData();
